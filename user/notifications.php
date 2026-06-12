@@ -115,7 +115,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="notif-meta-bar">
                         <span class="notif-time"><i class="fas fa-clock"></i> <?php echo timeAgo($notif['created_at']); ?></span>
                         <?php if ($notif['type']): ?>
-                            <span class="notif-type-badge"><?php echo e(ucfirst($notif['type'])); ?></span>
+                            <span class="notif-type-badge"><?php echo e(translateStatus($notif['type'])); ?></span>
                         <?php endif; ?>
                     </div>
                 </div>

@@ -304,3 +304,37 @@ function getNotifIcon($type) {
     ];
     return $icons[$type] ?? 'fa-bell';
 }
+
+/**
+ * Traduire un statut ou un type
+ */
+function translateStatus($status) {
+    $translations = [
+        'upcoming' => 'À venir',
+        'ongoing' => 'En cours',
+        'completed' => 'Terminé',
+        'active' => 'Actif',
+        'inactive' => 'Inactif',
+        'pending' => 'En attente',
+        'accepted' => 'Accepté',
+        'rejected' => 'Refusé',
+        'draft' => 'Brouillon',
+        'published' => 'Publié',
+        'open' => 'Ouvert',
+        'closed' => 'Fermé',
+        'general' => 'Général',
+        'actualite' => 'Actualité',
+        'annonce' => 'Annonce',
+        'admin' => 'Admin',
+        'user' => 'Utilisateur',
+        'activity' => 'Activité',
+        'post' => 'Publication',
+        'member' => 'Membre',
+        'participation' => 'Participation',
+        'comment' => 'Commentaire',
+        'message' => 'Message',
+        'favorite' => 'Favori'
+    ];
+    $val = strtolower($status ?? '');
+    return $translations[$val] ?? ucfirst($status ?? '');
+}

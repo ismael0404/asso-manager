@@ -232,7 +232,7 @@ require_once __DIR__ . '/../includes/header.php';
             
             <div class="detail-body">
                 <div class="detail-badges">
-                    <span class="badge badge-<?php echo e($detailActivity['status']); ?>"><?php echo e(ucfirst($detailActivity['status'])); ?></span>
+                    <span class="badge badge-<?php echo e($detailActivity['status']); ?>"><?php echo e(translateStatus($detailActivity['status'])); ?></span>
                     <?php if ($detailActivity['registration_status'] === 'closed'): ?>
                         <span class="badge badge-inactive"><i class="fas fa-lock"></i> Inscriptions fermées</span>
                     <?php else: ?>
@@ -467,7 +467,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="card-body">
                     <div class="mb-1" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                         <span class="badge badge-<?php echo e($activity['status']); ?>">
-                            <?php echo e(ucfirst($activity['status'])); ?>
+                            <?php echo e(translateStatus($activity['status'])); ?>
                         </span>
                         <span class="participant-count-small"><i class="fas fa-users"></i> <?php echo $activity['participant_count']; ?></span>
                         <?php if ($activity['max_participants']): ?>

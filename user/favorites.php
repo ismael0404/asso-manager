@@ -68,7 +68,7 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
                 <div class="card-body">
                     <div class="mb-1" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                        <span class="badge badge-<?php echo e($fav['status']); ?>"><?php echo e(ucfirst($fav['status'])); ?></span>
+                        <span class="badge badge-<?php echo e($fav['status']); ?>"><?php echo e(translateStatus($fav['status'])); ?></span>
                         <span class="participant-count-small"><i class="fas fa-users"></i> <?php echo $fav['participant_count']; ?></span>
                     </div>
                     <h3 class="card-title"><?php echo e($fav['title']); ?></h3>

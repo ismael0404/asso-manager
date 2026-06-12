@@ -228,7 +228,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     <span class="pending-badge-sm"><?php echo $act['pending']; ?> ⏳</span>
                                 <?php endif; ?>
                             </td>
-                            <td><span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(ucfirst($act['status'])); ?></span></td>
+                            <td><span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(translateStatus($act['status'])); ?></span></td>
                         </tr>
                         <?php endforeach; ?>
                         <?php if (empty($recentAct)): ?>

@@ -396,7 +396,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <td><strong><?php echo e($act['title']); ?></strong></td>
                         <td><?php echo date('d/m/Y', strtotime($act['activity_date'])); ?></td>
                         <td><?php echo e($act['location'] ?? '-'); ?></td>
-                        <td><span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(ucfirst($act['status'])); ?></span></td>
+                        <td><span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(translateStatus($act['status'])); ?></span></td>
                         <td>
                             <?php if (($act['publication_status'] ?? 'published') === 'published'): ?>
                                 <form method="POST" style="display:inline;">

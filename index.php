@@ -118,7 +118,7 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="card-body">
                     <div class="mb-1" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                         <span class="badge badge-<?php echo e($activity['status']); ?>">
-                            <?php echo e(ucfirst($activity['status'])); ?>
+                            <?php echo e(translateStatus($activity['status'])); ?>
                         </span>
                         <span class="participant-count-small"><i class="fas fa-users"></i> <?php echo $activity['participant_count']; ?></span>
                     </div>
@@ -168,7 +168,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endif; ?>
                 </div>
                 <div class="card-body">
-                    <span class="badge badge-upcoming mb-1"><?php echo e(ucfirst($post['category'])); ?></span>
+                    <span class="badge badge-upcoming mb-1"><?php echo e(translateStatus($post['category'])); ?></span>
                     <h3 class="card-title"><?php echo e($post['title']); ?></h3>
                     <p class="card-text"><?php echo e(mb_strimwidth($post['content'], 0, 120, '...')); ?></p>
                     <div class="card-meta">

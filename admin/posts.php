@@ -136,7 +136,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <tr>
                         <td><?php echo $offset + $i + 1; ?></td>
                         <td><strong class="truncate"><?php echo e($post['title']); ?></strong></td>
-                        <td><span class="badge badge-upcoming"><?php echo e(ucfirst($post['category'])); ?></span></td>
+                        <td><span class="badge badge-upcoming"><?php echo e(translateStatus($post['category'])); ?></span></td>
                         <td><?php echo e($post['author_name']); ?></td>
                         <td>
                             <?php if (($post['publication_status'] ?? 'published') === 'published'): ?>

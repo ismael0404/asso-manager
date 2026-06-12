@@ -128,7 +128,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="mac-content">
                     <div class="mac-header">
                         <a href="<?php echo BASE_URL; ?>/user/activities.php?detail=<?php echo $act['id']; ?>" class="mac-title"><?php echo e($act['title']); ?></a>
-                        <span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(ucfirst($act['status'])); ?></span>
+                        <span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(translateStatus($act['status'])); ?></span>
                     </div>
                     <div class="mac-meta">
                         <span><i class="fas fa-calendar"></i> <?php echo date('d/m/Y', strtotime($act['activity_date'])); ?></span>

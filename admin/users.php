@@ -196,7 +196,7 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                     <div class="profile-info-item">
                         <label>Rôle</label>
-                        <p><span class="badge badge-<?php echo $viewUser['role']; ?>"><?php echo ucfirst($viewUser['role']); ?></span></p>
+                        <p><span class="badge badge-<?php echo $viewUser['role']; ?>"><?php echo translateStatus($viewUser['role']); ?></span></p>
                     </div>
                     <div class="profile-info-item">
                         <label>Statut</label>
@@ -308,7 +308,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </td>
                         <td><?php echo e($u['email']); ?></td>
                         <td>
-                            <span class="badge badge-<?php echo $u['role']; ?>"><?php echo ucfirst($u['role']); ?></span>
+                            <span class="badge badge-<?php echo $u['role']; ?>"><?php echo translateStatus($u['role']); ?></span>
                         </td>
                         <td>
                             <?php if ($u['is_active']): ?>

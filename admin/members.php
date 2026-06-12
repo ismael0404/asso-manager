@@ -112,7 +112,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <td><?php echo e($m['email']); ?></td>
                         <td><?php echo e($m['phone'] ?? '-'); ?></td>
                         <td><?php echo date('d/m/Y', strtotime($m['membership_date'])); ?></td>
-                        <td><span class="badge badge-<?php echo e($m['status']); ?>"><?php echo e(ucfirst($m['status'])); ?></span></td>
+                        <td><span class="badge badge-<?php echo e($m['status']); ?>"><?php echo e(translateStatus($m['status'])); ?></span></td>
                         <td>
                             <div class="table-actions">
                                 <a href="?edit=<?php echo $m['id']; ?>" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>

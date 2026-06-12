@@ -168,7 +168,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <?php if ($act['location']): ?>
                             <span><i class="fas fa-map-marker-alt"></i> <?php echo e($act['location']); ?></span>
                             <?php endif; ?>
-                            <span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(ucfirst($act['status'])); ?></span>
+                            <span class="badge badge-<?php echo e($act['status']); ?>"><?php echo e(translateStatus($act['status'])); ?></span>
                         </div>
                         <p class="cdd-desc"><?php echo e(mb_strimwidth($act['description'], 0, 200, '...')); ?></p>
                         <a href="<?php echo BASE_URL; ?>/user/activities.php?detail=<?php echo $act['id']; ?>" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i> Voir détails</a>

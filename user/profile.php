@@ -105,7 +105,7 @@ require_once __DIR__ . '/../includes/header.php';
         <?php endif; ?>
     </div>
     <h2><?php echo e($currentUser['full_name']); ?></h2>
-    <p><?php echo e($currentUser['email']); ?> · <span class="badge badge-<?php echo $currentUser['role']; ?>"><?php echo ucfirst($currentUser['role']); ?></span></p>
+    <p><?php echo e($currentUser['email']); ?> · <span class="badge badge-<?php echo $currentUser['role']; ?>"><?php echo translateStatus($currentUser['role']); ?></span></p>
     <?php if ($currentUser['bio']): ?>
         <p class="profile-bio-hero"><?php echo e($currentUser['bio']); ?></p>
     <?php endif; ?>
@@ -151,7 +151,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
             <div class="profile-info-item">
                 <label>Rôle</label>
-                <p><span class="badge badge-<?php echo $currentUser['role']; ?>"><?php echo ucfirst($currentUser['role']); ?></span></p>
+                <p><span class="badge badge-<?php echo $currentUser['role']; ?>"><?php echo translateStatus($currentUser['role']); ?></span></p>
             </div>
             <div class="profile-info-item">
                 <label>Membre depuis</label>

@@ -101,7 +101,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <span><i class="fas fa-clock"></i> <?php echo date('d/m/Y à H:i', strtotime($log['created_at'])); ?></span>
                             <span><?php echo timeAgo($log['created_at']); ?></span>
                             <?php if ($log['entity_type']): ?>
-                                <span class="badge badge-upcoming"><?php echo e(ucfirst($log['entity_type'])); ?></span>
+                                <span class="badge badge-upcoming"><?php echo e(translateStatus($log['entity_type'])); ?></span>
                             <?php endif; ?>
                         </div>
                     </div>
