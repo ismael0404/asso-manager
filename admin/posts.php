@@ -64,6 +64,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ' . BASE_URL . '/admin/posts.php');
         exit();
     }
+    
+    // Warn user
+    if ($action === 'warn_user') {
+        $authorId = (int)$_POST['author_id'];
+        $postId = (int)$_POST['post_id'];
+        
+        $stmt = $pdo->prepare("SELECT title FROM posts WHERE id=?");
+        $stmt->execute([$postId]);
+        $postTitle = $stmt->fetchColumn();
+        
+        $messageContent = "Ceci est un avertissement officiel. Votre publication intitulée \"$postTitle\" a été signalée comme inappropriée. Veuillez la modifier ou la supprimer, ou elle sera retirée par un administrateur.";
+        
+        // Envoyer message privé
+        $pdo->prepare("INSERT INTO messages (sender_id, receiver_id, subject, content) VALUES (?, ?, ?, ?)")
+            ->execute([$_SESSION['user_id'], $authorId, "Avertissement - Publication inappropriée", $messageContent]);
+            
+        // Notifier
+        addNotification($authorId, "Avertissement de l'administrateur concernant votre publication.", BASE_URL . '/user/messages.php', 'warning');
+        
+        addLog('a envoyé un avertissement à l\'utilisateur #'.$authorId.' pour la publication #'.$postId, 'user', $authorId);
+        setFlash('success', 'L\'utilisateur a reçu un avertissement par message privé.');
+        header('Location: ' . BASE_URL . '/admin/posts.php');
+        exit();
+    }
 }
 
 if (isset($_GET['delete'])) {
@@ -85,7 +109,7 @@ $total = $pdo->query("SELECT COUNT(*) as c FROM posts")->fetch()['c'];
 $totalPages = ceil($total / $perPage);
 $offset = ($page - 1) * $perPage;
 
-$posts = $pdo->query("SELECT p.*, u.full_name as author_name FROM posts p LEFT JOIN users u ON p.author_id=u.id ORDER BY p.created_at DESC LIMIT $perPage OFFSET $offset")->fetchAll();
+$posts = $pdo->query("SELECT p.*, u.full_name as author_name, u.role as author_role FROM posts p LEFT JOIN users u ON p.author_id=u.id ORDER BY p.created_at DESC LIMIT $perPage OFFSET $offset")->fetchAll();
 
 $editPost = null;
 if (isset($_GET['edit'])) {
@@ -137,7 +161,12 @@ require_once __DIR__ . '/../includes/header.php';
                         <td><?php echo $offset + $i + 1; ?></td>
                         <td><strong class="truncate"><?php echo e($post['title']); ?></strong></td>
                         <td><span class="badge badge-upcoming"><?php echo e(translateStatus($post['category'])); ?></span></td>
-                        <td><?php echo e($post['author_name']); ?></td>
+                        <td>
+                            <?php echo e($post['author_name']); ?>
+                            <?php if ($post['author_role'] === 'admin'): ?>
+                                <span class="badge" style="background:var(--gray-200); color:var(--gray-700); font-size:0.7rem;">Admin</span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <?php if (($post['publication_status'] ?? 'published') === 'published'): ?>
                                 <form method="POST" style="display:inline;">
@@ -158,8 +187,16 @@ require_once __DIR__ . '/../includes/header.php';
                         <td><?php echo date('d/m/Y', strtotime($post['created_at'])); ?></td>
                         <td>
                             <div class="table-actions">
-                                <a href="?edit=<?php echo $post['id']; ?>" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                <a href="?delete=<?php echo $post['id']; ?>" class="btn btn-icon btn-danger" data-confirm="Supprimer cette publication ?"><i class="fas fa-trash"></i></a>
+                                <a href="?edit=<?php echo $post['id']; ?>" class="btn btn-icon btn-warning" title="Modifier"><i class="fas fa-edit"></i></a>
+                                <?php if (($post['author_role'] ?? '') !== 'admin'): ?>
+                                    <form method="POST" style="display:inline;" onsubmit="return confirm('Envoyer un avertissement à cet utilisateur ?');">
+                                        <input type="hidden" name="action" value="warn_user">
+                                        <input type="hidden" name="author_id" value="<?php echo $post['author_id']; ?>">
+                                        <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
+                                        <button type="submit" class="btn btn-icon btn-secondary" title="Mettre en garde l'auteur" style="background: var(--warning); color: #fff;"><i class="fas fa-exclamation-triangle"></i></button>
+                                    </form>
+                                <?php endif; ?>
+                                <a href="?delete=<?php echo $post['id']; ?>" class="btn btn-icon btn-danger" data-confirm="Supprimer cette publication ?" title="Supprimer"><i class="fas fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>

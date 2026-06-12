@@ -51,7 +51,7 @@ $pendingParticipations = getPendingParticipationsCount();
                 <li><a href="<?php echo BASE_URL; ?>/user/activities.php" class="nav-link">
                     <i class="fas fa-calendar-alt"></i> Activités
                 </a></li>
-                <li><a href="<?php echo BASE_URL; ?>/index.php#posts" class="nav-link">
+                <li><a href="<?php echo BASE_URL; ?>/user/posts.php" class="nav-link <?php echo $currentPage === 'posts' ? 'active' : ''; ?>">
                     <i class="fas fa-newspaper"></i> Actualités
                 </a></li>
                 <li><a href="<?php echo BASE_URL; ?>/index.php#contact" class="nav-link">
@@ -113,6 +113,7 @@ $pendingParticipations = getPendingParticipationsCount();
                             <?php endif; ?>
                             <li><a href="<?php echo BASE_URL; ?>/user/profile.php"><i class="fas fa-user-cog"></i> Profil</a></li>
                             <li><a href="<?php echo BASE_URL; ?>/user/my-activities.php"><i class="fas fa-calendar-check"></i> Mes Activités</a></li>
+                            <li><a href="<?php echo BASE_URL; ?>/user/my-posts.php"><i class="fas fa-newspaper"></i> Mes Actualités</a></li>
                             <li><a href="<?php echo BASE_URL; ?>/user/favorites.php"><i class="fas fa-heart"></i> Favoris</a></li>
                             <li><a href="<?php echo BASE_URL; ?>/user/calendar.php"><i class="fas fa-calendar"></i> Calendrier</a></li>
                             <li><a href="<?php echo BASE_URL; ?>/user/notifications.php"><i class="fas fa-bell"></i> Notifications

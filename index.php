@@ -32,17 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
     $email = trim($_POST['email'] ?? '');
     $subject = trim($_POST['subject'] ?? '');
     $message = trim($_POST['message'] ?? '');
-    
+
     if (!empty($name) && !empty($email) && !empty($subject) && !empty($message)) {
         $stmt = $pdo->prepare("INSERT INTO contacts (name, email, subject, message) VALUES (?, ?, ?, ?)");
         $stmt->execute([$name, $email, $subject, $message]);
-        
+
         // Notifier les admins
         $admins = $pdo->query("SELECT id FROM users WHERE role = 'admin'")->fetchAll();
         foreach ($admins as $admin) {
             addNotification($admin['id'], 'Nouveau message de ' . $name . ' : ' . $subject, '/admin/messages.php');
         }
-        
+
         setFlash('success', 'Votre message a été envoyé avec succès !');
         header('Location: ' . BASE_URL . '/index.php#contact');
         exit();
@@ -63,7 +63,8 @@ require_once __DIR__ . '/includes/header.php';
             <i class="fas fa-star"></i> Plateforme de gestion associative
         </div>
         <h1>Ensemble, construisons un <span>avenir meilleur</span></h1>
-        <p>Gérez vos activités, membres et publications en toute simplicité avec notre plateforme moderne et intuitive.</p>
+        <p>Gérez vos activités, membres et publications en toute simplicité avec notre plateforme moderne et intuitive.
+        </p>
         <div class="hero-buttons">
             <?php if (!isLoggedIn()): ?>
                 <a href="<?php echo BASE_URL; ?>/register.php" class="btn btn-lg btn-primary">
@@ -103,46 +104,52 @@ require_once __DIR__ . '/includes/header.php';
             <h2>Nos Activités Récentes</h2>
             <p>Découvrez les dernières activités organisées par notre association</p>
         </div>
-        
+
         <?php if (count($recentActivities) > 0): ?>
-        <div class="grid-3">
-            <?php foreach ($recentActivities as $activity): ?>
-            <div class="card card-clickable" onclick="window.location='<?php echo BASE_URL; ?>/user/activities.php?detail=<?php echo $activity['id']; ?>'">
-                <div class="card-img">
-                    <?php if ($activity['image']): ?>
-                        <img src="<?php echo BASE_URL . '/assets/images/' . e($activity['image']); ?>" alt="<?php echo e($activity['title']); ?>">
-                    <?php else: ?>
-                        <i class="fas fa-calendar-check"></i>
-                    <?php endif; ?>
-                </div>
-                <div class="card-body">
-                    <div class="mb-1" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                        <span class="badge badge-<?php echo e($activity['status']); ?>">
-                            <?php echo e(translateStatus($activity['status'])); ?>
-                        </span>
-                        <span class="participant-count-small"><i class="fas fa-users"></i> <?php echo $activity['participant_count']; ?></span>
+            <div class="grid-3">
+                <?php foreach ($recentActivities as $activity): ?>
+                    <div class="card card-clickable"
+                        onclick="window.location='<?php echo BASE_URL; ?>/user/activities.php?detail=<?php echo $activity['id']; ?>'">
+                        <div class="card-img">
+                            <?php if ($activity['image']): ?>
+                                <img src="<?php echo BASE_URL . '/assets/images/' . e($activity['image']); ?>"
+                                    alt="<?php echo e($activity['title']); ?>">
+                            <?php else: ?>
+                                <i class="fas fa-calendar-check"></i>
+                            <?php endif; ?>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-1" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                                <span class="badge badge-<?php echo e($activity['status']); ?>">
+                                    <?php echo e(translateStatus($activity['status'])); ?>
+                                </span>
+                                <span class="participant-count-small"><i class="fas fa-users"></i>
+                                    <?php echo $activity['participant_count']; ?></span>
+                            </div>
+                            <h3 class="card-title"><?php echo e($activity['title']); ?></h3>
+                            <p class="card-text"><?php echo e(mb_strimwidth($activity['description'], 0, 120, '...')); ?></p>
+                            <div class="card-meta">
+                                <span><i class="fas fa-calendar"></i>
+                                    <?php echo date('d/m/Y', strtotime($activity['activity_date'])); ?></span>
+                                <?php if ($activity['location']): ?>
+                                    <span><i class="fas fa-map-marker-alt"></i>
+                                        <?php echo e(mb_strimwidth($activity['location'], 0, 25, '...')); ?></span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="card-title"><?php echo e($activity['title']); ?></h3>
-                    <p class="card-text"><?php echo e(mb_strimwidth($activity['description'], 0, 120, '...')); ?></p>
-                    <div class="card-meta">
-                        <span><i class="fas fa-calendar"></i> <?php echo date('d/m/Y', strtotime($activity['activity_date'])); ?></span>
-                        <?php if ($activity['location']): ?>
-                        <span><i class="fas fa-map-marker-alt"></i> <?php echo e(mb_strimwidth($activity['location'], 0, 25, '...')); ?></span>
-                        <?php endif; ?>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="text-center mt-3">
-            <a href="<?php echo BASE_URL; ?>/user/activities.php" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Voir toutes les activités</a>
-        </div>
+            <div class="text-center mt-3">
+                <a href="<?php echo BASE_URL; ?>/user/activities.php" class="btn btn-primary"><i
+                        class="fas fa-arrow-right"></i> Voir toutes les activités</a>
+            </div>
         <?php else: ?>
-        <div class="empty-state">
-            <i class="fas fa-calendar-times"></i>
-            <h3>Aucune activité pour le moment</h3>
-            <p>Revenez bientôt pour découvrir nos prochaines activités !</p>
-        </div>
+            <div class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <h3>Aucune activité pour le moment</h3>
+                <p>Revenez bientôt pour découvrir nos prochaines activités !</p>
+            </div>
         <?php endif; ?>
     </div>
 </section>
@@ -155,35 +162,37 @@ require_once __DIR__ . '/includes/header.php';
             <h2>Dernières Publications</h2>
             <p>Restez informé des dernières nouvelles de notre association</p>
         </div>
-        
+
         <?php if (count($recentPosts) > 0): ?>
-        <div class="grid-3">
-            <?php foreach ($recentPosts as $post): ?>
-            <div class="card">
-                <div class="card-img">
-                    <?php if ($post['image']): ?>
-                        <img src="<?php echo BASE_URL . '/assets/images/' . e($post['image']); ?>" alt="<?php echo e($post['title']); ?>">
-                    <?php else: ?>
-                        <i class="fas fa-newspaper"></i>
-                    <?php endif; ?>
-                </div>
-                <div class="card-body">
-                    <span class="badge badge-upcoming mb-1"><?php echo e(translateStatus($post['category'])); ?></span>
-                    <h3 class="card-title"><?php echo e($post['title']); ?></h3>
-                    <p class="card-text"><?php echo e(mb_strimwidth($post['content'], 0, 120, '...')); ?></p>
-                    <div class="card-meta">
-                        <span><i class="fas fa-user"></i> <?php echo e($post['author_name']); ?></span>
-                        <span><i class="fas fa-clock"></i> <?php echo date('d/m/Y', strtotime($post['created_at'])); ?></span>
+            <div class="grid-3">
+                <?php foreach ($recentPosts as $post): ?>
+                    <div class="card">
+                        <div class="card-img">
+                            <?php if ($post['image']): ?>
+                                <img src="<?php echo BASE_URL . '/assets/images/' . e($post['image']); ?>"
+                                    alt="<?php echo e($post['title']); ?>">
+                            <?php else: ?>
+                                <i class="fas fa-newspaper"></i>
+                            <?php endif; ?>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge badge-upcoming mb-1"><?php echo e(translateStatus($post['category'])); ?></span>
+                            <h3 class="card-title"><?php echo e($post['title']); ?></h3>
+                            <p class="card-text"><?php echo e(mb_strimwidth($post['content'], 0, 120, '...')); ?></p>
+                            <div class="card-meta">
+                                <span><i class="fas fa-user"></i> <?php echo e($post['author_name']); ?></span>
+                                <span><i class="fas fa-clock"></i>
+                                    <?php echo date('d/m/Y', strtotime($post['created_at'])); ?></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-        </div>
         <?php else: ?>
-        <div class="empty-state">
-            <i class="fas fa-newspaper"></i>
-            <h3>Aucune publication pour le moment</h3>
-        </div>
+            <div class="empty-state">
+                <i class="fas fa-newspaper"></i>
+                <h3>Aucune publication pour le moment</h3>
+            </div>
         <?php endif; ?>
     </div>
 </section>
@@ -198,7 +207,7 @@ require_once __DIR__ . '/includes/header.php';
             <h2>Contactez-nous</h2>
             <p>Une question ? N'hésitez pas à nous écrire</p>
         </div>
-        
+
         <div class="contact-grid">
             <div class="contact-info">
                 <h3>Nos Coordonnées</h3>
@@ -231,7 +240,7 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                 </div>
             </div>
-            
+
             <div class="contact-form-card">
                 <form method="POST" action="<?php echo BASE_URL; ?>/index.php#contact">
                     <div class="form-row">
@@ -250,7 +259,8 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                     <div class="form-group">
                         <label>Message</label>
-                        <textarea name="message" class="form-control" placeholder="Votre message..." required></textarea>
+                        <textarea name="message" class="form-control" placeholder="Votre message..."
+                            required></textarea>
                     </div>
                     <button type="submit" name="contact_submit" class="btn btn-primary btn-lg w-full">
                         <i class="fas fa-paper-plane"></i> Envoyer le message
